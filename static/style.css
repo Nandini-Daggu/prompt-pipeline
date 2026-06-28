@@ -1,0 +1,269 @@
+/* ── Reset & base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0f1117;
+  --surface:   #1a1d27;
+  --surface2:  #22263a;
+  --border:    #2e3250;
+  --text:      #e2e8f0;
+  --muted:     #8892b0;
+  --accent:    #6c63ff;
+
+  --s1: #3b82f6;   /* blue  — stage 1 */
+  --s2: #f97316;   /* orange — stage 2 */
+  --s3: #22c55e;   /* green  — stage 3 */
+  --s4: #a855f7;   /* purple — stage 4 */
+  --final: #f59e0b;
+
+  --radius: 10px;
+  --font: 'Segoe UI', system-ui, sans-serif;
+  --mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+header { text-align: center; margin-bottom: 2rem; }
+header h1 { font-size: 2rem; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 4px; }
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Form elements ──────────────────────────────────────────── */
+.form-row { margin-bottom: 1rem; }
+.form-row label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+
+select, textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem;
+  outline: none;
+  transition: border-color .2s;
+}
+select:focus, textarea:focus { border-color: var(--accent); }
+textarea { resize: vertical; font-family: var(--mono); font-size: 0.88rem; }
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.sample-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.sample-label { font-size: 0.82rem; color: var(--muted); }
+
+.btn-sample {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 4px 14px;
+  transition: border-color .2s, background .2s;
+}
+.btn-sample:hover { background: var(--border); border-color: var(--accent); }
+
+.btn-run {
+  width: 100%;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem;
+  transition: opacity .2s, transform .1s;
+}
+.btn-run:hover { opacity: 0.88; }
+.btn-run:active { transform: scale(0.98); }
+.btn-run:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Progress bar ───────────────────────────────────────────── */
+#progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+#progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+#progress-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--accent), var(--s3));
+  width: var(--pct, 0%);
+  transition: width .5s ease;
+}
+#progress-label { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+
+/* ── Stage cards ────────────────────────────────────────────── */
+.stage-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.stage-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+.stage-header:hover { filter: brightness(1.05); }
+
+.stage-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  color: #fff;
+  white-space: nowrap;
+}
+.stage-title { font-weight: 700; font-size: 1rem; flex: 1; }
+.stage-technique { font-size: 0.8rem; color: rgba(255,255,255,.65); }
+.stage-time { font-size: 0.78rem; color: rgba(255,255,255,.5); }
+.chevron { font-size: 0.8rem; color: rgba(255,255,255,.5); transition: transform .2s; }
+.stage-card.collapsed .chevron { transform: rotate(-90deg); }
+
+/* stage color bands */
+.s1 .stage-header { background: color-mix(in srgb, var(--s1) 20%, var(--surface)); border-bottom: 2px solid var(--s1); }
+.s1 .stage-badge  { background: var(--s1); }
+.s2 .stage-header { background: color-mix(in srgb, var(--s2) 20%, var(--surface)); border-bottom: 2px solid var(--s2); }
+.s2 .stage-badge  { background: var(--s2); }
+.s3 .stage-header { background: color-mix(in srgb, var(--s3) 20%, var(--surface)); border-bottom: 2px solid var(--s3); }
+.s3 .stage-badge  { background: var(--s3); }
+.s4 .stage-header { background: color-mix(in srgb, var(--s4) 20%, var(--surface)); border-bottom: 2px solid var(--s4); }
+.s4 .stage-badge  { background: var(--s4); }
+
+.stage-body { background: var(--surface); padding: 1.2rem; }
+.stage-card.collapsed .stage-body { display: none; }
+
+/* ── Sub-sections inside a stage ────────────────────────────── */
+.sub-section { margin-bottom: 1.2rem; }
+.sub-section:last-child { margin-bottom: 0; }
+.sub-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+pre {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  overflow-x: auto;
+  padding: 0.9rem 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #cdd6f4;
+}
+
+/* JSON syntax highlighting */
+.json-key   { color: #89dceb; }
+.json-str   { color: #a6e3a1; }
+.json-num   { color: #fab387; }
+.json-bool  { color: #f38ba8; }
+.json-null  { color: var(--muted); }
+
+/* ── Scores ─────────────────────────────────────────────────── */
+.scores-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0; }
+.score-pill {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.82rem;
+}
+.score-pill span { font-weight: 700; }
+.pass-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.pass-badge.pass { background: color-mix(in srgb, var(--s3) 20%, transparent); color: var(--s3); border: 1px solid var(--s3); }
+.pass-badge.fail { background: color-mix(in srgb, #ef4444 20%, transparent); color: #ef4444; border: 1px solid #ef4444; }
+
+/* ── Ticket output ──────────────────────────────────────────── */
+.ticket-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ticket-box h2, .ticket-box h3 { color: var(--accent); }
+
+/* ── Final result ───────────────────────────────────────────── */
+.final-card {
+  border: 2px solid var(--final);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1.5rem;
+  animation: fadeIn .4s ease;
+}
+.final-header {
+  background: color-mix(in srgb, var(--final) 20%, var(--surface));
+  padding: 0.9rem 1.2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--final);
+}
+.final-body { background: var(--surface); padding: 1.2rem; }
+
+/* ── Input summary ──────────────────────────────────────────── */
+.input-card .stage-header { background: var(--surface2); border-bottom: 2px solid var(--border); }
+.input-card .stage-badge  { background: var(--muted); }
+
+/* ── Error ──────────────────────────────────────────────────── */
+.error-box {
+  background: color-mix(in srgb, #ef4444 15%, var(--surface));
+  border: 1px solid #ef4444;
+  border-radius: var(--radius);
+  color: #fca5a5;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+}
+
+/* ── Meta row ───────────────────────────────────────────────── */
+.meta-row { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+/* ── Utilities ──────────────────────────────────────────────── */
+.hidden { display: none; }
